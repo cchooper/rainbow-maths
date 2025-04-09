@@ -20,3 +20,19 @@ th {
 .hidden {
   display: none;
 }
+
+.row {
+  display: flex;
+  flex-direction: row;
+  height: 30px;
+  margin-bottom: auto;
+  column-gap: 10px;
+}
+
+.correct {
+  background-color: green;
+}
+
+.incorrect {
+  background-color: red;
+}

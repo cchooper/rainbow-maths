@@ -85,6 +85,7 @@ const shallowEqual = (obj1, obj2) =>
 
 const table = document.getElementById("table");
 const title = document.getElementById("title");
+const revealButton = document.getElementById("reveal-button");
 
 const urlParams = new URLSearchParams(window.location.search);
 const level = levels[urlParams.get('level').toLowerCase()];
@@ -101,13 +102,14 @@ title.style.backgroundColor = level.colour;
 for (j = 0; j < questions.length / 2; ++j) {
   const row = document.createElement("tr");
 
-  let question = questionDetails(j * 2);
-  addCell(row, question, "question");
+  let questionText = getQuestionText(j * 2);
+  addCell(row, questionText, "question");
   addCell(row, "", "answer", {questionNumber: j * 2, editable: true});
-  addCell(row, question.answer, "correct-answer hidden");
-  question = questionDetails(j * 2 + 1);
-  addCell(row, question, "question");
+  addCell(row, questions[j*2].answer, "correct-answer hidden");
+  questionText = getQuestionText(j * 2 + 1);
+  addCell(row, questionText, "question");
   addCell(row, "", "answer", {questionNumber: j * 2 + 1, editable: true});
+  addCell(row, questions[j*2+1].answer, "correct-answer hidden");
 
   table.appendChild(row);
 }
@@ -131,7 +133,7 @@ function addCell(row, text, classNames, { questionNumber, editable = false } = {
   row.appendChild(cell);
 }
 
-function questionDetails(num) {
+function getQuestionText(num) {
   const question = questions[num];
 
   switch (question.questionType) {
@@ -188,3 +190,19 @@ function generateQuestion() {
     return {questionType, timesTable: multiplier, multiplier: timesTable, answer: total };
   }
 }
+
+revealButton.addEventListener("click", () => {
+  const answers = table.querySelectorAll(".answer");
+  const correctAnswers = table.querySelectorAll(".correct-answer");
+  let score = 0;
+
+  for (let i = 0; i < answers.length; ++i) {
+    if (answers[i].textContent.trim() === correctAnswers[i].textContent.trim()) {
+      answers[i].classList.add("correct");
+      correctAnswers[i].classList.add("correct");
+      ++score;
+    }
+    correctAnswers[i].classList.remove("hidden");
+    answers[i].contentEditable = false;
+  }
+});
