@@ -88,7 +88,7 @@ const title = document.getElementById("title");
 const revealButton = document.getElementById("reveal-button");
 
 const urlParams = new URLSearchParams(window.location.search);
-const level = levels[urlParams.get('level').toLowerCase()];
+let level = levels[urlParams.get('level').toLowerCase()];
 
 if (!level) {
   level = levels["yellow"];
@@ -143,7 +143,7 @@ function getQuestionText(num) {
     case "square":
       return `${question.timesTable} <sup>2</sup>`;
     case "inverse":
-      return `${question.dividend} ÷ ${question.divisor}`;
+      return `${question.first} x ${question.second} = ${question.total}`;
   }
 }
 
@@ -180,11 +180,13 @@ function generateQuestion() {
   const total = timesTable * multiplier;
 
   if (questionType === "inverse") {
-    const divisor = coinFlip() ? timesTable : multiplier;
-    const total = timesTable * multiplier;
-    return { questionType, dividend: total, divisor, answer: divisor === timesTable ? multiplier : timesTable };
+    if (coinFlip()) {
+      return { questionType, first: "_", second: multiplier, total, answer: timesTable };
+    } else {
+      return { questionType, first: timesTable, second: "_", total, answer: multiplier };
+    }
   } else if (questionType === "square") {
-    return { questionType, timesTable };
+    return { questionType, timesTable, answer: timesTable * timesTable };
   } else if (coinFlip()) {
     return { questionType, timesTable, multiplier, answer: total };
   } else {
