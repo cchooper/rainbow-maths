@@ -4,6 +4,7 @@ const levels = {
     tables: [2],
     colour: "pink",
     ceiling: 10,
+    columns: 2,
     questions: 10
   },
   "red": {
@@ -11,6 +12,7 @@ const levels = {
     tables: [2, 5],
     colour: "red",
     ceiling: 10,
+    columns: 2,
     questions: 10
   },
   "orange": {
@@ -18,6 +20,7 @@ const levels = {
     tables: [2, 5, 10],
     colour: "orange",
     ceiling: 10,
+    columns: 2,
     questions: 20
   },
   "yellow": {
@@ -25,6 +28,7 @@ const levels = {
     tables: [2, 3, 4, 5, 10],
     colour: "yellow",
     ceiling: 10,
+    columns: 2,
     questions: 40
   },
  "green": {
@@ -32,6 +36,7 @@ const levels = {
     tables: [2, 3, 4, 5, 8, 10],
     colour: "green",
     ceiling: 10,
+    columns: 2,
     questions: 40
   },
   "blue": {
@@ -39,7 +44,8 @@ const levels = {
     tables: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
     colour: "blue",
     ceiling: 12,
-    questions: 40
+    columns: 3,
+    questions: 60
   },
   "indigo": {
     name: "Indigo",
@@ -47,7 +53,8 @@ const levels = {
     colour: "indigo",
     ceiling: 12,
     inverses: true,
-    questions: 40
+    columns: 3,
+    questions: 60
   },
   "violet": {
     name: "Violet",
@@ -55,7 +62,8 @@ const levels = {
     colour: "violet",
     ceiling: 12,
     inverses: true,
-    questions: 40
+    columns: 3,
+    questions: 60
   },
   "bronze": {
     name: "Bronze",
@@ -63,7 +71,8 @@ const levels = {
     colour: "#cd7f32",
     ceiling: 12,
     inverses: true,
-    questions: 40
+    columns: 4,
+    questions: 80
   },
   "silver": {
     name: "Silver",
@@ -73,7 +82,8 @@ const levels = {
     inverses: true,
     squares: true,
     fractions: true,
-    questions: 40
+    columns: 4,
+    questions: 80
   }
 };
 
@@ -98,11 +108,13 @@ const questions = generateQuestions(level.questions);
 
 title.textContent = "Rainbow Maths "+ level.name;
 title.style.backgroundColor = level.colour;
+title.colSpan = level.columns * 3 - 1;
 
-for (j = 0; j < questions.length / 2; ++j) {
+for (j = 0; j < questions.length / level.columns; ++j) {
   const row = document.createElement("tr");
-  addQuestionCells(row, j);
-  addQuestionCells(row, j + (questions.length / 2));
+  for (let k = 0; k < level.columns; ++k) {
+    addQuestionCells(row, j + (k * (questions.length / level.columns)));
+  }
   table.appendChild(row);
 }
 
@@ -212,7 +224,7 @@ revealButton.addEventListener("click", () => {
   scoreCell = document.getElementById("score");
   scoreCell.textContent = `${score} / ${level.questions}`;
   if (score === level.questions) {
-    scoreCell.textContent = scoreCell.textContent + " 😄";
+    scoreCell.textContent = scoreCell.textContent + " 🤩";
   }
   scoreCell.classList.remove("hidden");
 });
