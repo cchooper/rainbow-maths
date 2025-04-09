@@ -98,6 +98,7 @@ const title = document.getElementById("title");
 const revealButton = document.getElementById("reveal-button");
 
 const urlParams = new URLSearchParams(window.location.search);
+let printable = urlParams.get('printable') === "true";
 let level = levels[urlParams.get('level').toLowerCase()];
 
 if (!level) {
@@ -118,7 +119,12 @@ for (j = 0; j < questions.length / level.columns; ++j) {
   table.appendChild(row);
 }
 
-table.querySelector("#q0").focus();
+if (printable) {
+  revealButton.classList.add("hidden");
+} else {
+  table.querySelector("#q0").focus();
+
+}
 
 function addQuestionCells(row, questionNumber) {
   let questionText = getQuestionText(questionNumber);
@@ -130,7 +136,7 @@ function addQuestionCells(row, questionNumber) {
 function addCell(row, text, classNames, { questionNumber, editable = false } = {}) {
   const cell = document.createElement("td");
   cell.innerHTML = text;
-  cell.contentEditable = editable;
+  cell.contentEditable = !printable;
   classNames.split(" ").forEach(name => cell.classList.add(name));
   cell.id = "q" + questionNumber;
   cell.addEventListener("keydown", e => {
