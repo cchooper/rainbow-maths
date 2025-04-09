@@ -40,8 +40,31 @@ const levels = {
     name: "Indigo",
     tables: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
     colour: "indigo",
-    ceiling: 10,
+    ceiling: 12,
     inverses: true
+  },
+  "violet": {
+    name: "Vuiolet",
+    tables: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+    colour: "violet",
+    ceiling: 12,
+    inverses: true
+  },
+  "bronze": {
+    name: "Bronze",
+    tables: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+    colour: "#cd7f32",
+    ceiling: 12,
+    inverses: true
+  },
+  "silver": {
+    name: "Silver",
+    tables: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+    colour: "silver",
+    ceiling: 10,
+    inverses: true,
+    squares: true,
+    fractions: true
   }
 };
 
@@ -59,7 +82,7 @@ const level = levels[urlParams.get('level').toLowerCase()];
 
 const questions = generateQuestions(40);
 
-title.textContent = "Rainbox Maths "+ level.name + " Level 1";
+title.textContent = "Rainbox Maths "+ level.name;
 title.style.backgroundColor = level.colour;
 
 for (j = 0; j < 20; ++j) {
@@ -77,22 +100,29 @@ for (j = 0; j < 20; ++j) {
 
 function addCell(row, text) {
   const cell = document.createElement("td");
-  cell.textContent = text;
+  cell.innerHTML = text;
   row.appendChild(cell);
 }
 
 function questionDetails(num) {
   const question = questions[num];
 
-  if (question.inverse) {
-    return `${question.dividend} ÷ ${question.divisor}`;
-  } else {
-    return `${question.timesTable} x ${question.multiplier}`;
+  switch (question.questionType) {
+    case "multiple":
+      return `${question.timesTable} x ${question.multiplier}`;
+    case "square":
+      return `${question.timesTable} <sup>2</sup>`;
+    case "inverse":
+      return `${question.dividend} ÷ ${question.divisor}`;
   }
 }
 
 function coinFlip() {
   return Math.random() > 0.5;
+}
+
+function randomChoice(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
 }
 
 function generateQuestions(num) {
@@ -108,17 +138,26 @@ function generateQuestions(num) {
 }
 
 function generateQuestion() {
-  const timesTable = level.tables[Math.floor(Math.random() * level.tables.length)];
+  const questionTypes = ["multiple"];
+  if (level.squares) questionTypes.push("square");
+  //if (level.fractions) questionTypes.push("fraction");
+  if (level.inverses) questionTypes.push("inverse");
+
+  const questionType = randomChoice(questionTypes);
+
+  const timesTable = randomChoice(level.tables);
   const multiplier = Math.floor(Math.random() * level.ceiling) + 1;
   const total = timesTable * multiplier;
-  const inverse = level.inverses && coinFlip();
-  if (inverse) {
+
+  if (questionType === "inverse") {
     const divisor = coinFlip() ? timesTable : multiplier;
     const total = timesTable * multiplier;
-    return { inverse, dividend: total, divisor, answer: divisor === timesTable ? multiplier : timesTable };
+    return { questionType, dividend: total, divisor, answer: divisor === timesTable ? multiplier : timesTable };
+  } else if (questionType === "square") {
+    return { questionType, timesTable };
   } else if (coinFlip()) {
-    return { timesTable, multiplier, answer: total };
+    return { questionType, timesTable, multiplier, answer: total };
   } else {
-    return { timesTable: multiplier, multiplier: timesTable, answer: total };
+    return {questionType, timesTable: multiplier, multiplier: timesTable, answer: total };
   }
 }
