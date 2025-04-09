@@ -50,3 +50,49 @@ button {
   margin: 4px 2px;
   cursor: pointer;
 }
+
+.main-page {
+  font-family: Georgia, serif;
+  background-color: #fdfdfd;
+  color: #333;
+  line-height: 1.6;
+  margin: 0;
+  padding: 2em;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Title styling */
+h1 {
+  font-size: 2.5em;
+  margin-bottom: 0.5em;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 0.3em;
+}
+
+/* Paragraphs */
+p {
+  margin-bottom: 1.2em;
+  font-size: 1.1em;
+}
+
+/* Unordered list styling */
+ul {
+  padding-left: 1.5em;
+  margin-bottom: 1.2em;
+}
+
+ul li {
+  margin-bottom: 0.4em;
+}
+
+/* Optional: subtle link styling */
+a {
+  color: #0066cc;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
