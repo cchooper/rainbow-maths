@@ -3,59 +3,67 @@ const levels = {
     name: "Pink",
     tables: [2],
     colour: "pink",
-    ceiling: 10
+    ceiling: 10,
+    questions: 10
   },
   "red": {
     name: "Red",
     tables: [2, 5],
     colour: "red",
-    ceiling: 10
-
+    ceiling: 10,
+    questions: 10
   },
   "orange": {
     name: "Orange",
     tables: [2, 5, 10],
     colour: "orange",
-    ceiling: 10
+    ceiling: 10,
+    questions: 20
   },
   "yellow": {
     name: "Yellow",
     tables: [2, 3, 4, 5, 10],
     colour: "yellow",
-    ceiling: 10
+    ceiling: 10,
+    questions: 40
   },
  "green": {
     name: "Green",
     tables: [2, 3, 4, 5, 8, 10],
     colour: "green",
-    ceiling: 10
+    ceiling: 10,
+    questions: 40
   },
   "blue": {
     name: "Blue",
     tables: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
     colour: "blue",
-    ceiling: 12
+    ceiling: 12,
+    questions: 40
   },
   "indigo": {
     name: "Indigo",
     tables: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
     colour: "indigo",
     ceiling: 12,
-    inverses: true
+    inverses: true,
+    questions: 40
   },
   "violet": {
-    name: "Vuiolet",
+    name: "Violet",
     tables: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
     colour: "violet",
     ceiling: 12,
-    inverses: true
+    inverses: true,
+    questions: 40
   },
   "bronze": {
     name: "Bronze",
     tables: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
     colour: "#cd7f32",
     ceiling: 12,
-    inverses: true
+    inverses: true,
+    questions: 40
   },
   "silver": {
     name: "Silver",
@@ -64,7 +72,8 @@ const levels = {
     ceiling: 10,
     inverses: true,
     squares: true,
-    fractions: true
+    fractions: true,
+    questions: 40
   }
 };
 
@@ -80,12 +89,16 @@ const title = document.getElementById("title");
 const urlParams = new URLSearchParams(window.location.search);
 const level = levels[urlParams.get('level').toLowerCase()];
 
-const questions = generateQuestions(40);
+if (!level) {
+  level = levels["yellow"];
+}
+
+const questions = generateQuestions(level.questions);
 
 title.textContent = "Rainbow Maths "+ level.name;
 title.style.backgroundColor = level.colour;
 
-for (j = 0; j < 20; ++j) {
+for (j = 0; j < questions.length; ++j) {
   const row = document.createElement("tr");
 
   let question = questionDetails(j * 2);
