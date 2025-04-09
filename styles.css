@@ -21,18 +21,32 @@ th {
   display: none;
 }
 
-.row {
+.main-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   height: 30px;
-  margin-bottom: auto;
-  column-gap: 10px;
+  row-gap: 20px;
+  align-items: center;
+  margin-top: 20px;
 }
 
 .correct {
-  background-color: green;
+  background-color: #4CAF50; /* Green */
 }
 
 .incorrect {
   background-color: red;
+}
+
+button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
 }

@@ -205,4 +205,11 @@ revealButton.addEventListener("click", () => {
     correctAnswers[i].classList.remove("hidden");
     answers[i].contentEditable = false;
   }
+
+  scoreCell = document.getElementById("score");
+  scoreCell.textContent = `${score} / ${level.questions}`;
+  if (score === level.questions) {
+    scoreCell.textContent = scoreCell.textContent + " 😄";
+  }
+  scoreCell.classList.remove("hidden");
 });
