@@ -101,17 +101,18 @@ title.style.backgroundColor = level.colour;
 
 for (j = 0; j < questions.length / 2; ++j) {
   const row = document.createElement("tr");
-
-  let questionText = getQuestionText(j * 2);
-  addCell(row, questionText, "question");
-  addCell(row, "", "answer", {questionNumber: j * 2, editable: true});
-  addCell(row, questions[j*2].answer, "correct-answer hidden");
-  questionText = getQuestionText(j * 2 + 1);
-  addCell(row, questionText, "question");
-  addCell(row, "", "answer", {questionNumber: j * 2 + 1, editable: true});
-  addCell(row, questions[j*2+1].answer, "correct-answer hidden");
-
+  addQuestionCells(row, j);
+  addQuestionCells(row, j + (questions.length / 2));
   table.appendChild(row);
+}
+
+table.querySelector("#q0").focus();
+
+function addQuestionCells(row, questionNumber) {
+  let questionText = getQuestionText(questionNumber);
+  addCell(row, questionText, "question");
+  addCell(row, "", "answer", {questionNumber: questionNumber, editable: true});
+  addCell(row, questions[questionNumber].answer, "correct-answer hidden");
 }
 
 function addCell(row, text, classNames, { questionNumber, editable = false } = {}) {
@@ -121,7 +122,7 @@ function addCell(row, text, classNames, { questionNumber, editable = false } = {
   classNames.split(" ").forEach(name => cell.classList.add(name));
   cell.id = "q" + questionNumber;
   cell.addEventListener("keydown", e => {
-    if (e.key == "Enter") {
+    if (e.key == "Enter" || e.key == "Tab") {
       e.preventDefault();
       let next = table.querySelector("#q" + (questionNumber + 1));
       if (!next) {
