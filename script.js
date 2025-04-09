@@ -98,22 +98,36 @@ const questions = generateQuestions(level.questions);
 title.textContent = "Rainbow Maths "+ level.name;
 title.style.backgroundColor = level.colour;
 
-for (j = 0; j < questions.length; ++j) {
+for (j = 0; j < questions.length / 2; ++j) {
   const row = document.createElement("tr");
 
   let question = questionDetails(j * 2);
-  addCell(row, question);
-  addCell(row, "");
+  addCell(row, question, "question");
+  addCell(row, "", "answer", {questionNumber: j * 2, editable: true});
+  addCell(row, question.answer, "correct-answer hidden");
   question = questionDetails(j * 2 + 1);
-  addCell(row, question);
-  addCell(row, "");
+  addCell(row, question, "question");
+  addCell(row, "", "answer", {questionNumber: j * 2 + 1, editable: true});
 
   table.appendChild(row);
 }
 
-function addCell(row, text) {
+function addCell(row, text, classNames, { questionNumber, editable = false } = {}) {
   const cell = document.createElement("td");
   cell.innerHTML = text;
+  cell.contentEditable = editable;
+  classNames.split(" ").forEach(name => cell.classList.add(name));
+  cell.id = "q" + questionNumber;
+  cell.addEventListener("keydown", e => {
+    if (e.key == "Enter") {
+      e.preventDefault();
+      let next = table.querySelector("#q" + (questionNumber + 1));
+      if (!next) {
+        next = table.querySelector("#q0");
+      }
+      next.focus();
+    }
+  });
   row.appendChild(cell);
 }
 
