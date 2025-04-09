@@ -82,7 +82,7 @@ const level = levels[urlParams.get('level').toLowerCase()];
 
 const questions = generateQuestions(40);
 
-title.textContent = "Rainbox Maths "+ level.name;
+title.textContent = "Rainbow Maths "+ level.name;
 title.style.backgroundColor = level.colour;
 
 for (j = 0; j < 20; ++j) {
